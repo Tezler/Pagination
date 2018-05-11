@@ -3,22 +3,22 @@ let students = [];
 let defaultListArray = [];
 let searchListArray = [];
 
+// pushes the student items to an array as well as the index.
 $(".student-item").each(function() {
-	var id = $(this)
-	console.log(id);
-	students.push(id);
+	var xyz = $(this)
+	students.push(xyz);
   defaultListArray.push($(this).index());
 });
 
-// On load, displays the default list of students
+// On load, displays the default list of students by calling the 2 functions
 $(document).ready(() => {
 	showPage(1, defaultListArray);
 	appendPageLinks(defaultListArray);
 })
 
-// Displays a "page" or "list" of students
+// Displays a "page" based on a list of students
+// Only shows the first 10 items.
 function showPage(pageNumber, studentList) {
-  console.log(studentList);
 	$(".student-item").each(function() {
 		$(this).addClass("hide");
 	});
@@ -36,16 +36,19 @@ function appendPageLinks(studentList) {
 	};
 	$(".pageLinks a").eq(0).addClass("active")
 
+	// Event listener for the page buttons.
 	$(".pagination a").on("click", function(e) {
 		var txt = $(e.target).text();
-    console.log(txt);
 		showPage(txt, studentList);
 		$(".pagination ul li a").removeClass("active");
 		$(".pagination ul li a").eq(txt - 1).addClass("active");
 	});
 };
 
-// Searches the list of students
+// Searches the list of students with 4 possible end results.
+// If nothing is searched, will alert the user then continue to show the default list.
+// If no results are found, alerts the user then continues to show the default list.
+// if results are found, will display the appropriate results and run appendPageLinks if results exceed 10.
 function searchList() {
 	searchListArray = [];
 	let inputVal = $(".student-search input").val().toLowerCase();
@@ -54,6 +57,9 @@ function searchList() {
 		showPage(1, defaultListArray);
 		appendPageLinks(defaultListArray);
 	} else {
+
+		/* Loops through the list of students checking to see if there is a match
+		with what is being searched */
 		for (i = 0; i < students.length; i++) {
 			let studentName = $(".student-item h3").eq(i).text();
 			let studentEmail = $(".student-item .email").eq(i).text();
@@ -61,11 +67,16 @@ function searchList() {
 				searchListArray.push($(".student-item").eq(i).index());
 			};
 		};
+
+		// Checks to see if the search returns no results.
 		if (searchListArray == "") {
 			alert("Sorry, no results found.");
       showPage(1, defaultListArray);
       appendPageLinks(defaultListArray);
 		} else {
+
+			// If results are found, removed the page links and runs the showPage function
+			// If more than 10 results are found, appendPageLinks runs adding the page links
       $(".pagination").empty();
 			showPage(1, searchListArray);
 			if (searchListArray.length > 10 == true) {
@@ -75,7 +86,7 @@ function searchList() {
 	};
 };
 
-// click event listener for the search button, executes searchList(). //
+// click event listener for the search button, executes searchList().
 $(".search-button").on("click", searchList);
 
 // Search input event listener for "enter" key
