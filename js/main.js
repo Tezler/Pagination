@@ -14,7 +14,7 @@ $(".student-item").each(function() {
 $(document).ready(() => {
 	showPage(1, defaultListArray);
 	appendPageLinks(defaultListArray);
-})
+});
 
 // Displays a "page" based on a list of students
 // Only shows the first 10 items.
@@ -75,8 +75,8 @@ function searchList() {
       appendPageLinks(defaultListArray);
 		} else {
 
-			// If results are found, removed the page links and runs the showPage function
-			// If more than 10 results are found, appendPageLinks runs adding the page links
+			// If results are found, removes the page links and runs the showPage function
+			// If more than 10 results are found, appendPageLinks runs adding the appropriate page links
       $(".pagination").empty();
 			showPage(1, searchListArray);
 			if (searchListArray.length > 10 == true) {
@@ -93,5 +93,5 @@ $(".search-button").on("click", searchList);
 $(".search-input").keyup(function(event) {
 	if (event.keyCode === 13) {
 		$(".search-button").click();
-	}
+	};
 });
